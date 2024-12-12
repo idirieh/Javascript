@@ -1,0 +1,136 @@
+<!-- HTML -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* CSS (styles.css) */
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 20px auto;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+
+      .tasks {
+        margin-top: 20px;
+      }
+
+      .task {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .task h3 {
+        margin: 0;
+        flex: 1;
+      }
+
+      .del {
+        padding: 6px 12px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .del:hover {
+        background-color: #c82333;
+      }
+    </style>
+    <title>Task List</title>
+  </head>
+  <body>
+    <input type="text" class="new-task" placeholder="Enter new task" />
+    <button class="btn">Add Task</button>
+    <div class="tasks"></div>
+
+    <script>
+      // JavaScript (script.js)
+      const btn = document.querySelector(".btn");
+      const newTask = document.querySelector(".new-task");
+      const tasks = document.querySelector(".tasks");
+
+      function createTaskElement(taskText) {
+        const div = document.createElement("div");
+        div.classList.add("task");
+
+        const h3 = document.createElement("h3");
+        h3.textContent = taskText;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("del");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+          div.remove();
+          updateLocalStorage();
+        });
+
+        div.appendChild(h3);
+        div.appendChild(deleteBtn);
+
+        return div;
+      }
+
+      function addTask() {
+        if (!newTask.value) return; // Prevent adding empty tasks
+        const taskElement = createTaskElement(newTask.value);
+        tasks.appendChild(taskElement);
+        newTask.value = ""; // Clear the input field after adding the task
+        updateLocalStorage();
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          addTask();
+        }
+      }
+
+      function updateLocalStorage() {
+        const taskElements = document.querySelectorAll(".task");
+        const tasksList = [];
+        taskElements.forEach((taskElement) => {
+          const taskText = taskElement.querySelector("h3").textContent;
+          tasksList.push(taskText);
+        });
+        localStorage.setItem("tasks", JSON.stringify(tasksList));
+      }
+
+      function getTasksFromLocalStorage() {
+        const tasksList = JSON.parse(localStorage.getItem("tasks"));
+        if (tasksList && tasksList.length > 0) {
+          tasksList.forEach((taskText) => {
+            const taskElement = createTaskElement(taskText);
+            tasks.appendChild(taskElement);
+          });
+        }
+      }
+
+      newTask.addEventListener("keypress", handleKeyPress);
+      btn.addEventListener("click", addTask);
+
+      // Restore tasks from local storage on page load
+      getTasksFromLocalStorage();
+    </script>
+  </body>
+</html>
