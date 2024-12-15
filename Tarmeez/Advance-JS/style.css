@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
+    /* Colors */
     --clr-primary: #215f73;
     --clr-white: #fff;
+    --clr-mian-bg: #0f0c29;
+    --clr-gradient1: #12c192;
+    --clr-gradient2: #009094;
+    --clr-gradient3: #215f73;
+
 }
 
 /* CSS Resets */
@@ -22,9 +28,9 @@ image, svg {
 
 body {
     font-family: "Roboto", sans-serif;
-    background: #0f0c29;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #12c192, #009094, #215f73);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #12c192, #009094, #215f73); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: var(--clr-mian-bg);  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, var(--clr-gradient1), var(--clr-gradient2), var(--clr-gradient3));  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, var(--clr-gradient1), var(--clr-gradient2), var(--clr-gradient3)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .title {
