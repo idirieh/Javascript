@@ -1,3 +1,4 @@
+
 const usersInfo = document.getElementById('users-info');
 const userPosts = document.getElementById('users-post');
 const userInfo = document.querySelector('.user-info');
