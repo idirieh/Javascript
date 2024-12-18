@@ -126,6 +126,7 @@ header {
 
 .result {
     padding: 2rem 0;
+    visibility: hidden;
 }
 
 .prayers-table {
