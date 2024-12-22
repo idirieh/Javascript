@@ -156,3 +156,22 @@ header {
     color: #007662;
     font-weight: bold;
 }
+
+@media screen and (max-width: 768px) {
+    .location-selection {
+        width: 100%;
+    }
+
+    .location-selection select {
+        width: 100%;
+    }
+
+    .location-selection .wrapper {
+        flex-direction: column;
+    }
+
+    .prayers-table {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+}
