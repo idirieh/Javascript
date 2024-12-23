@@ -223,7 +223,7 @@ function getPrayerTimesByCity(city, country) {
     axios.get(url)
     .then((response) => {
         // handle success
-        let prayerTimes = response.data.data.timings
+        const prayerTimes = response.data.data.timings
         console.log(prayerTimes);
         document.getElementById('fajr-time').innerText = prayerTimes["Fajr"];
         document.getElementById('sunrise-time').innerText = prayerTimes["Sunrise"];
@@ -231,6 +231,11 @@ function getPrayerTimesByCity(city, country) {
         document.getElementById('asr-time').innerText = prayerTimes["Asr"];
         document.getElementById('maghrib-time').innerText = prayerTimes["Maghrib"];
         document.getElementById('isha-time').innerText = prayerTimes["Isha"];
+
+        const hijriDate = response.data.data.date.hijri;
+        let hijriDateFormatted = `${hijriDate.weekday.ar} ${hijriDate.month.ar} , ${hijriDate.year}`;;
+        console.log(hijriDateFormatted);
+        document.getElementById('hijri-date').innerText = hijriDateFormatted;
     })
 
 }
