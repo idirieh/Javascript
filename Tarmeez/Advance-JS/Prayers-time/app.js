@@ -8,103 +8,56 @@ const resultCountry = document.getElementById('result-country')
 
 // Today Date
 
-let today = new Date();
-let options = { 
-    weekday: 'long',   // Full name of the weekday (e.g., "Tuesday")
-    month: 'long',     // Full name of the month (e.g., "December")
-    day: 'numeric',    // Numeric day (e.g., 17)
-    year: 'numeric'    // Full year (e.g., 2024)
-};
+// let today = new Date();
+// let options = { 
+//     weekday: 'long',   // Full name of the weekday (e.g., "Tuesday")
+//     month: 'long',     // Full name of the month (e.g., "December")
+//     day: 'numeric',    // Numeric day (e.g., 17)
+//     year: 'numeric'    // Full year (e.g., 2024)
+// };
 
-let formattedDate = today.toLocaleDateString('en-US', options);
-console.log(formattedDate);
+// let formattedDate = today.toLocaleDateString('en-US', options);
+// console.log(formattedDate);
 
 
-searchBtn.addEventListener('click', () => {
-    document.querySelector('.result').style.visibility = "visible";
-    let city = cityDropdown.value;
-    let country = countryDropdown.value;
-    console.log(country)
-    console.log(city)
-    getPrayerTimesByCity(city, country);
-    date.innerText = formattedDate;
-    resultCity.innerText = city;
-    let currentCountry = country;
-    switch (currentCountry) {
-        case "SA":
-            currentCountry = "Saudi Arabia";
-            break;
-        case "TR":
-            currentCountry = "Turkey";
-            break;
-        case "MA":
-            currentCountry = "Morocco";
-            break;
-        case "DZ":
-            currentCountry = "Algeria";
-            break;
-        case "BH":
-            currentCountry = "Bahrain";
-            break;
-        case "KM":
-            currentCountry = "Comoros";
-            break;
-        case "DJ":
-            currentCountry = "Djibouti";
-            break;
-        case "EG":
-            currentCountry = "Egypt";
-            break;
-        case "IQ":
-            currentCountry = "Iraq";
-            break;
-        case "JO":
-            currentCountry = "Jordan";
-            break;
-        case "KW":
-            currentCountry = "Kuwait";
-            break;
-        case "LB":
-            currentCountry = "Lebanon";
-            break;
-        case "LY":
-            currentCountry = "Libya";
-            break;
-        case "MR":
-            currentCountry = "Mauritania";
-            break;
-        case "OM":
-            currentCountry = "Oman";
-            break;
-        case "PS":
-            currentCountry = "Palestine";
-            break;
-        case "SO":
-            currentCountry = "Somalia";
-            break;
-        case "SD":
-            currentCountry = "Sudan";
-            break;
-        case "SY":
-            currentCountry = "Syria";
-            break;
-        case "TN":
-            currentCountry = "Tunisia";
-            break;
-        case "AE":
-            currentCountry = "United Arab Emirates";
-            break;
-        case "YE":
-            currentCountry = "Yemen";
-            break;
-        default:
-            currentCountry = "Unknown Country";
-            break;
-    }
-    
-    resultCountry.innerText = currentCountry;
 
-})
+// Populate countries dropdown
+const countries = [
+    { code: "SA", name: "Saudi Arabia" },
+    { code: "TR", name: "Turkey" },
+    { code: "QA", name: "Qatar" },
+    { code: "DZ", name: "Algeria" },
+    { code: "BH", name: "Bahrain" },
+    { code: "KM", name: "Comoros" },
+    { code: "DJ", name: "Djibouti" },
+    { code: "EG", name: "Egypt" },
+    { code: "IQ", name: "Iraq" },
+    { code: "JO", name: "Jordan" },
+    { code: "KW", name: "Kuwait" },
+    { code: "LB", name: "Lebanon" },
+    { code: "LY", name: "Libya" },
+    { code: "MR", name: "Mauritania" },
+    { code: "MA", name: "Morocco" },
+    { code: "OM", name: "Oman" },
+    { code: "PS", name: "Palestine" },
+    { code: "SO", name: "Somalia" },
+    { code: "SD", name: "Sudan" },
+    { code: "SY", name: "Syria" },
+    { code: "TN", name: "Tunisia" },
+    { code: "AE", name: "United Arab Emirates" },
+    { code: "YE", name: "Yemen" }
+]
+
+function addCountries() {
+    countries.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country.code;
+        option.textContent = country.name;
+        countryDropdown.appendChild(option);
+    });
+}
+addCountries()
+
 
 
 // Data for countries and cities
@@ -219,25 +172,46 @@ function updateCities() {
 
 function getPrayerTimesByCity(city, country) {
     // const axios = require('axios');
-    let url = `https://api.aladhan.com/v1/timingsByCity?date=18-12-2024&city=${city}&country=${country}&method=4`
-    axios.get(url)
-    .then((response) => {
-        // handle success
-        const prayerTimes = response.data.data.timings
-        console.log(prayerTimes);
-        document.getElementById('fajr-time').innerText = prayerTimes["Fajr"];
-        document.getElementById('sunrise-time').innerText = prayerTimes["Sunrise"];
-        document.getElementById('dhuhr-time').innerText = prayerTimes["Dhuhr"];
-        document.getElementById('asr-time').innerText = prayerTimes["Asr"];
-        document.getElementById('maghrib-time').innerText = prayerTimes["Maghrib"];
-        document.getElementById('isha-time').innerText = prayerTimes["Isha"];
-
-        const hijriDate = response.data.data.date.hijri;
-        let hijriDateFormatted = `${hijriDate.weekday.ar} ${hijriDate.month.ar} , ${hijriDate.year}`;;
-        console.log(hijriDateFormatted);
-        document.getElementById('hijri-date').innerText = hijriDateFormatted;
-    })
+    return new Promise((resolve, reject) => {
+        let url = `https://api.aladhan.com/v1/timingsByCity?date=18-12-2024&city=${city}&country=${country}&method=4`
+        axios.get(url)
+        .then((response) => {
+            // handle success
+            const prayerTimes = response.data.data.timings
+            console.log(prayerTimes);
+            document.getElementById('fajr-time').innerText = prayerTimes["Fajr"];
+            document.getElementById('sunrise-time').innerText = prayerTimes["Sunrise"];
+            document.getElementById('dhuhr-time').innerText = prayerTimes["Dhuhr"];
+            document.getElementById('asr-time').innerText = prayerTimes["Asr"];
+            document.getElementById('maghrib-time').innerText = prayerTimes["Maghrib"];
+            document.getElementById('isha-time').innerText = prayerTimes["Isha"];
+    
+            const theDate = response.data.data.date;
+            const gregorianDate = theDate.gregorian;
+            let dateFormatted = `${gregorianDate.weekday.en} ${gregorianDate.day} ${gregorianDate.month.en} , ${gregorianDate.year}`;
+            date.innerText = dateFormatted;
+    
+            const hijriDate = theDate.hijri;
+            let hijriDateFormatted = `${hijriDate.weekday.ar} ${hijriDate.month.ar} , ${hijriDate.year}`;;
+            document.getElementById('hijri-date').innerText = hijriDateFormatted; 
+            resolve();
+    })    
+    })        
 
 }
 
 
+
+searchBtn.addEventListener('click', () => {    
+    let city = cityDropdown.value;
+    let country = countryDropdown.value;
+    console.log(country)
+    console.log(city)
+    getPrayerTimesByCity(city, country).then(() => {
+        document.querySelector('.result').style.visibility = 'visible';
+    });
+    resultCity.innerText = city;
+    // By Country Code - Copilot
+    const selectedCountry = countries.find(c => c.code === country);
+    resultCountry.innerText = selectedCountry ? selectedCountry.name : "Unknown Country";
+})
